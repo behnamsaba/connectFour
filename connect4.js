@@ -43,6 +43,22 @@ function handleClick(event){
 
   board[y][x] = currPlayer;
   placeInTable(y, x);
+
+
+
+  
+  //switch player
+  //my way
+  if(currPlayer === 1){
+    return currPlayer = 2;
+  }else if(currPlayer === 2){
+    return currPlayer = 1;
+  }
+
+  //// switch players - better way with Conditional (ternary) operator.
+  // currPlayer = currPlayer === 1 ? 2 : 1;
+
+
 }
 
 
