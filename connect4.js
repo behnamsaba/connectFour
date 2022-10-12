@@ -12,13 +12,17 @@ function makeBoard() {
   
 }
 
+
+///check any avaliablity spot in column -- x 
 function findSpotForCol(x) {
   for (let y = HEIGHT - 1; y >= 0; y--) {
     if (!board[y][x]) {
       return y;
     }
   }
-  return null;
+  // console.log("not empty")
+  alert("No Spot Available");
+  return null
 }
 
 
@@ -31,22 +35,45 @@ function placeInTable(y, x){
 };
 
 
+/** endGame: announce game end */
+
+function endGame(msg) {
+  alert(msg);
+}
+
+
 
 
 
 function handleClick(event){
+  //for creating our boarder we need to know X and Y
   const x = event.target.id;
   const y = findSpotForCol(x);
+  //if every space was accoupied, findSpotforColr return null for y.
   if(y === null){
     return;
   }
 
+  // place piece in board and add to HTML table
   board[y][x] = currPlayer;
   placeInTable(y, x);
 
-
-
+  //////////////////////////////////
+  // check for win
+  if (checkForWin()) {
+    return endGame(`Player ${currPlayer} won!`);
+  }
   
+  // check for tie
+  if (board.every(row => row.every(cell => cell))) {
+    return endGame('Tie!');
+  }
+
+  ////////////////////////////////////
+
+
+
+
   //switch player
   //my way
   if(currPlayer === 1){
@@ -97,6 +124,44 @@ function makeHtmlBoard(){
 
 
 }
+
+
+/// check for win according to sb code.//////////////////////////////////////////////////////////////////////
+
+
+function checkForWin() {
+  function _win(cells) {
+    // Check four cells to see if they're all color of current player
+    //  - cells: list of four (y, x) cells
+    //  - returns true if all are legal coordinates & all match currPlayer
+
+    return cells.every(
+      ([y, x]) =>
+        y >= 0 &&
+        y < HEIGHT &&
+        x >= 0 &&
+        x < WIDTH &&
+        board[y][x] === currPlayer
+    );
+  }
+
+  // TODO: read and understand this code. Add comments to help you.
+
+  for (var y = 0; y < HEIGHT; y++) {
+    for (var x = 0; x < WIDTH; x++) {
+      var horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
+      var vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      var diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
+      var diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+
+      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+        return true;
+      }
+    }
+  }
+}
+
+
 
 
 
