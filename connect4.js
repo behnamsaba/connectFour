@@ -17,6 +17,37 @@ function makeBoard() {
   
 }
 
+/** makeHtmlBoard: make HTML table and row of column tops. */
+
+function makeHtmlBoard(){
+  const board = document.getElementById("board");
+  const top = document.createElement("tr");
+  top.setAttribute('id', 'column-top');
+  top.addEventListener('click', handleClick);
+
+  //add table data into tabale row for top clickable 
+  for (let x = 0; x < WIDTH; x++) {
+    const headCell = document.createElement('td');
+    headCell.setAttribute('id', x);
+    top.append(headCell);
+  }
+
+  board.append(top);
+  
+  //make not clickable part of board (6 row) => should create 6 tabale row in html (tr)
+  for(let y = 0 ; y < HEIGHT ; y++){
+    const row = document.createElement("tr");
+
+    for(let x = 0 ; x < WIDTH ; x++){
+      const cell = document.createElement("td");
+      cell.setAttribute('id', `${y}-${x}`);
+      row.append(cell);
+    }
+    board.append(row);
+  }
+
+}
+
 
 ///check any avaliablity spot in column -- x 
 function findSpotForCol(x) {
@@ -88,34 +119,6 @@ function handleClick(event){
 
 }
 
-function makeHtmlBoard(){
-  const board = document.getElementById("board");
-  const top = document.createElement("tr");
-  top.setAttribute('id', 'column-top');
-  top.addEventListener('click', handleClick);
-
-  //add table data into tabale row for top clickable 
-  for (let x = 0; x < WIDTH; x++) {
-    const headCell = document.createElement('td');
-    headCell.setAttribute('id', x);
-    top.append(headCell);
-  }
-
-  board.append(top);
-  
-  //make not clickable part of board (6 row) => should create 6 tabale row in html (tr)
-  for(let y = 0 ; y < HEIGHT ; y++){
-    const row = document.createElement("tr");
-
-    for(let x = 0 ; x < WIDTH ; x++){
-      const cell = document.createElement("td");
-      cell.setAttribute('id', `${y}-${x}`);
-      row.append(cell);
-    }
-    board.append(row);
-  }
-
-}
 
 function checkForWin() {
   function _win(cells) {
